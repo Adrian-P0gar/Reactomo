@@ -1,20 +1,43 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import styled, { ThemeProvider } from "styled-components";
+
+const theme = {
+  font: "sans-serif",
+  background: "green",
+};
+
+const Button = styled.button`
+  font-family: ${(props) => props.theme.font};
+  font-size: 1.3rem;
+  border-color: white;
+  border-radius: 50px;
+  padding: 7px 10px;
+  background: yellow;
+  color: #fff;
+  &:hover {
+    background: blue;
+  }
+`;
+
+const H1 = styled.h1`
+  font-family: ${(props) => props.theme.font};
+`;
 
 function Header() {
   return (
-    <header style={headerStyle}>
-      <h1>Pokemns</h1>
-      <Link className={"btn"} to="/">
-        {" "}
-        Pokemons{" "}
-      </Link>{" "}
-      |
-      <Link className={"btn"} to="/types">
-        {" "}
-        Types{" "}
-      </Link>
-    </header>
+    <ThemeProvider theme={theme}>
+      <header style={headerStyle}>
+        <H1>Pokemns</H1>
+        <Link to="/">
+          <Button>Pokemons</Button>
+        </Link>{" "}
+        |{" "}
+        <Link to="/types">
+          <Button>Types</Button>
+        </Link>
+      </header>
+    </ThemeProvider>
   );
 }
 

@@ -1,18 +1,20 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-class Types extends Component {
-  state = {
-    types: [],
-  };
 
-  componentDidMount() {
-    axios.get(" https://pokeapi.co/api/v2/type").then((res) => {
-      this.setState({ types: res.data.results });
+const Types = (props) => {
+  const [state, setStateType] = useState({
+    types: [],
+  });
+
+  useEffect(() => {
+    axios.get("https://pokeapi.co/api/v2/type").then((res) => {
+      console.log(res);
+      setStateType({ types: res.data.results });
     });
-  }
-  render() {
-    return this.state.types.map((type) => <h3> {type.name} </h3>);
-  }
-}
+  }, []);
+
+  let content = state.types.map((type) => <h3> {type.name} </h3>);
+  return content;
+};
 
 export default Types;

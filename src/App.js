@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Pokemon from "./Pokemon";
 import Header from "./components/layout/Header.js";
@@ -7,43 +7,45 @@ import axios from "axios";
 import Types from "./Types.js";
 import PokemonDetails from "./PokemonDetails";
 
-class App extends Component {
-  state = {
-    pokemon: [],
-  };
+const App = (props) => {
+  const [data, setPokemonChars] = useState({ pokemon: [] });
 
-  componentDidMount() {
-    axios.get("https://pokeapi.co/api/v2/pokemon?limit=100").then((res) => {
-      this.setState({ pokemon: res.data.results });
-    });
-  }
+  useEffect(() => {
+    axios
+      .get("https://pokeapi.co/api/v2/pokemon?limit=100")
+      .then((res) => {
+        console.log(res);
+        setPokemonChars({ pokemon: res.data.results });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-  render() {
-    return (
-      <Router>
-        <div className="App">
-          <div className="container">
-            <Header />
-            <Route
-              exact
-              path="/"
-              render={(props) => (
-                <React.Fragment>
-                  <Pokemon pokemons={this.state.pokemon} />
-                </React.Fragment>
-              )}
-            />
-            <Route path="/types" component={Types} />
-            <Route
-              path="/pokemon/:pname"
-              component={PokemonDetails}
-              pname={this.props.name}
-            />
-          </div>
+  let content = (
+    <Router>
+      <div className="App">
+        <div className="container">
+          <Header />
+          <Route
+            exact
+            path="/"
+            render={(props) => (
+              <React.Fragment>
+                <Pokemon pokemons={data.pokemon} />
+              </React.Fragment>
+            )}
+          />
+          <Route path="/types" component={Types} />
+          <Route
+            path="/pokemon/:pname"
+            component={PokemonDetails}
+            pname={props.name}
+          />
         </div>
-      </Router>
-    );
-  }
-}
-
+      </div>
+    </Router>
+  );
+  return content;
+};
 export default App;
