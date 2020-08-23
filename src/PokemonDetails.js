@@ -1,36 +1,55 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { getAllPokemons } from "./components/GetPokemons";
 
-const PokemonDetails = (props, pdetail) => {
-  const [state, setPokemonDetails] = useState({ detail: {} });
-  console.log(JSON.stringify(pdetail) + " props for pokemon details");
-
+const PokemonDetails = (props) => {
+  const [state, setPokemonDetails] = useState();
+  const [loading, setLoading] = useState(true);
   const routeParameter = props.match.params.pname;
+
   useEffect(() => {
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${routeParameter}`)
-      .then((res) => {
-        setPokemonDetails({ detail: res.data });
-      });
+    async function fetchData() {
+      let response = await getAllPokemons(
+        `https://pokeapi.co/api/v2/pokemon/${routeParameter}`
+      );
+      setPokemonDetails(response);
+      setLoading(false);
+    }
+    fetchData();
   }, [routeParameter]);
 
-  const content = Object.keys(state.detail).map((d) => (
-    <article>
-      {/* <h1>
-        {" "}
-        {state.detail ? state.detail.abilities[0].ability.name : ""}{" "}
-        !!!!!!!!!!!!!!!{" "}
-      </h1> */}
-      <h1>{d}</h1>
-      {state.detail[d].constructor === Array &&
-        state.detail[d].map((det) =>
-          Object.values(det).map((v) => <p>{JSON.stringify(v)}</p>)
+  console.log("????STATE DETAILS????????? " + JSON.stringify(state));
+  const content = (
+    <div>
+      <div> {loading ? <h1>Loading...</h1> : <h1> Name: {state.name}</h1>}</div>
+      <div>
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : (
+          <p> Base experience: {state.base_experience}</p>
         )}
-      {state.detail[d].constructor !== Array && (
-        <p>{JSON.stringify(state.detail[d], null, 2)}</p>
-      )}
-    </article>
-  ));
+      </div>
+      <div>
+        {loading ? <h1>Loading...</h1> : <p> Weight: {state.weight}</p>}
+      </div>
+      <div>
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : (
+          <p> First ability: {state.abilities[0].ability.name}</p>
+        )}
+      </div>
+      <div>
+        {loading ? (
+          <h1>Loading...</h1>
+        ) : (
+          <p> Second ability: {state.abilities[1].ability.name}</p>
+        )}
+      </div>
+    </div>
+  );
+
   return content;
 };
+
 export default PokemonDetails;

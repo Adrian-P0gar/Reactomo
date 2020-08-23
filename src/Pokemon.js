@@ -16,7 +16,7 @@ const Container = styled.div`
 
 const Pokemon = (props) => {
   let url = "/pokemon/";
-  console.log(JSON.stringify(props.name) + "!?!?!!?!?!?!!? pula");
+  // console.log(JSON.stringify(props.name) + "!?!?!!?!?!?!!? pula");
   // console.log(JSON.stringify(props.pokemons) + "!?!?!!?!?!?!!? pula mea");
 
   let content = (
@@ -27,8 +27,6 @@ const Pokemon = (props) => {
             <img src={props.pokemons.sprites.front_default} alt="" />
           </div>
           <a href={url + props.pokemons.name}>{props.pokemons.name}</a>
-
-          <PokemonDetails pdetail={"pula mea ma "} />
         </div>
       </Card>
     </Container>

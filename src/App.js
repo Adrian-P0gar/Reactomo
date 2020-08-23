@@ -11,7 +11,6 @@ const App = (props) => {
   const [pokemons, setPokemonChars] = useState();
   const [loading, setLoading] = useState(true);
   const firstUrl = "https://pokeapi.co/api/v2/pokemon?limit=5";
-  console.log(JSON.stringify("this is prop in APP  " + pokemons));
   useEffect(() => {
     async function fetchData() {
       let response = await getAllPokemons(firstUrl);
