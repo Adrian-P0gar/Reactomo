@@ -6,6 +6,7 @@ import "./App.css";
 import Types from "./Types.js";
 import PokemonDetails from "./PokemonDetails";
 import { getAllPokemons } from "./components/GetPokemons";
+import { Button, Card } from "react-bootstrap";
 
 const App = (props) => {
   const [pokemons, setPokemonChars] = useState();
@@ -39,16 +40,18 @@ const App = (props) => {
           {loading ? (
             <h1>Loading...</h1>
           ) : (
-            <div className="grid-container">
+            <div className="grid">
               <Header />
               <Route
                 exact
                 path="/"
                 render={(props) => (
                   <React.Fragment>
-                    {pokemons.map((pokemon, i) => {
-                      return <Pokemon key={i} pokemons={pokemon} />;
-                    })}
+                    <div className="grid">
+                      {pokemons.map((pokemon, i) => {
+                        return <Pokemon key={i} pokemons={pokemon} />;
+                      })}
+                    </div>
                   </React.Fragment>
                 )}
               />

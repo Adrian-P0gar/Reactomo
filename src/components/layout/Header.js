@@ -10,11 +10,11 @@ const theme = {
 const Button = styled.button`
   font-family: ${(props) => props.theme.font};
   font-size: 1.3rem;
-  border-color: white;
+  border-color: black;
   border-radius: 50px;
   padding: 7px 10px;
   background: yellow;
-  color: #fff;
+  color: black;
   &:hover {
     background: blue;
   }
@@ -28,7 +28,7 @@ function Header() {
   return (
     <ThemeProvider theme={theme}>
       <header style={headerStyle}>
-        <H1>Pokemons</H1>
+        <H1>Pokedex</H1>
         <Link to="/">
           <Button>Pokemons</Button>
         </Link>{" "}
