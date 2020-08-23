@@ -8,7 +8,7 @@ const Types = (props) => {
 
   useEffect(() => {
     axios.get("https://pokeapi.co/api/v2/type").then((res) => {
-      console.log(res);
+      // console.log(res);
       setStateType({ types: res.data.results });
     });
   }, []);

@@ -21,14 +21,14 @@ const Button = styled.button`
 `;
 
 const H1 = styled.h1`
-  font-family: ${(props) => props.theme.font};
+  font-family: "sans-serif";
 `;
 
 function Header() {
   return (
     <ThemeProvider theme={theme}>
       <header style={headerStyle}>
-        <H1>Pokemns</H1>
+        <H1>Pokemons</H1>
         <Link to="/">
           <Button>Pokemons</Button>
         </Link>{" "}
@@ -42,7 +42,7 @@ function Header() {
 }
 
 const headerStyle = {
-  background: "#333",
+  background: "#696969",
   color: "#fff",
   textAlign: "center",
   padding: "10px",

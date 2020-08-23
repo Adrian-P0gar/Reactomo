@@ -3,45 +3,64 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Pokemon from "./Pokemon";
 import Header from "./components/layout/Header.js";
 import "./App.css";
-import axios from "axios";
 import Types from "./Types.js";
 import PokemonDetails from "./PokemonDetails";
+import { getAllPokemons } from "./components/GetPokemons";
 
 const App = (props) => {
-  const [data, setPokemonChars] = useState({ pokemon: [] });
-
+  const [pokemons, setPokemonChars] = useState();
+  const [loading, setLoading] = useState(true);
+  const firstUrl = "https://pokeapi.co/api/v2/pokemon?limit=5";
+  console.log(JSON.stringify("this is prop in APP  " + pokemons));
   useEffect(() => {
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=100")
-      .then((res) => {
-        console.log(res);
-        setPokemonChars({ pokemon: res.data.results });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    async function fetchData() {
+      let response = await getAllPokemons(firstUrl);
+      setPokemonChars(response.results);
+      await getPokemonsDetails(response.results);
+      setLoading(false);
+    }
+    fetchData();
   }, []);
+
+  const getPokemonsDetails = async (data) => {
+    let _pokemonData = await Promise.all(
+      data.map(async (pokemonIterator) => {
+        let pokemonsRecords = await getAllPokemons(pokemonIterator.url);
+
+        return pokemonsRecords;
+      })
+    );
+    setPokemonChars(_pokemonData);
+  };
 
   let content = (
     <Router>
       <div className="App">
         <div className="container">
-          <Header />
-          <Route
-            exact
-            path="/"
-            render={(props) => (
-              <React.Fragment>
-                <Pokemon pokemons={data.pokemon} />
-              </React.Fragment>
-            )}
-          />
-          <Route path="/types" component={Types} />
-          <Route
-            path="/pokemon/:pname"
-            component={PokemonDetails}
-            pname={props.name}
-          />
+          {loading ? (
+            <h1>Loading...</h1>
+          ) : (
+            <div className="grid-container">
+              <Header />
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <React.Fragment>
+                    {pokemons.map((pokemon, i) => {
+                      return <Pokemon key={i} pokemons={pokemon} />;
+                    })}
+                  </React.Fragment>
+                )}
+              />
+              <Route path="/types" component={Types} />
+              <Route
+                path="/pokemon/:pname"
+                component={PokemonDetails}
+                pname={props.name}
+              />{" "}
+            </div>
+          )}
         </div>
       </div>
     </Router>
